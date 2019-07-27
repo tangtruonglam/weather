@@ -20,14 +20,9 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import { MessageBox, Button } from 'element-ui'
 import axios from 'axios'
 
-@Component({
-  components: {
-    MessageBox,
-  },
-})
+@Component
 export default class Weather extends Vue {
   private options = {
     weekday: 'long',
@@ -55,6 +50,8 @@ export default class Weather extends Vue {
     date: this.prnDt,
   }
 
+  private currentTime: string = this.getCurrentTime()
+
   private created() {
     this.fetchWeather()
   }
@@ -68,10 +65,8 @@ export default class Weather extends Vue {
     return date + ' ' + time
   }
 
-  private currentTime: string = this.getCurrentTime()
-
   private async fetchWeather() {
-    let arrayAddress = this.weather.location.split(',')
+    const arrayAddress = this.weather.location.split(',')
     this.weather.city = arrayAddress[0]
     this.weather.country = arrayAddress[1]
     try {
@@ -93,18 +88,12 @@ export default class Weather extends Vue {
       }
       this.weather = weather
     } catch (error) {
-      MessageBox.alert(
-        'Không thể tìm thấy thời tiết ở thành phố hiện tại',
-        'Oops',
-        {
-          confirmButtonText: 'OK',
-        }
-      )
+      alert('Không thể tìm thấy thời tiết ở thành phố hiện tại')
     }
   }
 
   private convertToC(kelvin: number) {
-    let celsius = kelvin - 273
+    const celsius = kelvin - 273
     return Math.round(celsius)
   }
 }
