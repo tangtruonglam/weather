@@ -19,8 +19,8 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
-import axios from 'axios'
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import axios from 'axios';
 
 @Component
 export default class Weather extends Vue {
@@ -33,8 +33,8 @@ export default class Weather extends Vue {
     minute: '2-digit',
     second: '2-digit',
     hour12: false,
-  }
-  private prnDt = new Date().toLocaleTimeString('vi-vn', this.options)
+  };
+  private prnDt = new Date().toLocaleTimeString('vi-vn', this.options);
   private weather: any = {
     location: 'Ha Noi, VN',
     description: '',
@@ -48,30 +48,30 @@ export default class Weather extends Vue {
     tempMin: 0,
     tempMax: 0,
     date: this.prnDt,
-  }
+  };
 
-  private currentTime: string = this.getCurrentTime()
+  private currentTime: string = this.getCurrentTime();
 
   private created() {
-    this.fetchWeather()
+    this.fetchWeather();
   }
 
   private getCurrentTime(): string {
-    const today = new Date()
+    const today = new Date();
     const date =
-      today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
+      today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     const time =
-      today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()
-    return date + ' ' + time
+      today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+    return date + ' ' + time;
   }
 
   private async fetchWeather() {
-    const arrayAddress = this.weather.location.split(',')
-    this.weather.city = arrayAddress[0]
-    this.weather.country = arrayAddress[1]
+    const arrayAddress = this.weather.location.split(',');
+    this.weather.city = arrayAddress[0];
+    this.weather.country = arrayAddress[1];
     try {
-      const api: string = `https://api.openweathermap.org/data/2.5/weather?q=${this.weather.city},${this.weather.country}&APPID=c8f33e60d8fb3f428dd92cb6e59ad647`
-      const res = await axios.get(api)
+      const api: string = `https://api.openweathermap.org/data/2.5/weather?q=${this.weather.city},${this.weather.country}&APPID=c8f33e60d8fb3f428dd92cb6e59ad647`;
+      const res = await axios.get(api);
       const weather = {
         cloud: res.data.clouds.all,
         humidity: res.data.main.humidity,
@@ -85,16 +85,16 @@ export default class Weather extends Vue {
         city: arrayAddress[0],
         country: arrayAddress[1],
         location: `${arrayAddress[0]}, ${arrayAddress[1]}`,
-      }
-      this.weather = weather
+      };
+      this.weather = weather;
     } catch (error) {
-      alert('Không thể tìm thấy thời tiết ở thành phố hiện tại')
+      alert('Không thể tìm thấy thời tiết ở thành phố hiện tại');
     }
   }
 
   private convertToC(kelvin: number) {
-    const celsius = kelvin - 273
-    return Math.round(celsius)
+    const celsius = kelvin - 273;
+    return Math.round(celsius);
   }
 }
 </script>
